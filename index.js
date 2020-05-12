@@ -45,7 +45,6 @@ map.on('load', function () {
     var statsLayer = features.filter(
       (item) => item.sourceLayer === 'WHO-WNTD-indicators-47er43'
     )[0];
-    console.log(statsLayer);
     if (statsLayer) {
       var country = statsLayer.properties['GEOUNIT'];
       if (activeLayer === 'Object with tobacco logo') {
@@ -85,6 +84,8 @@ function toggleLayers(e) {
   activeLayer = clickedLayer;
   e.preventDefault();
   e.stopPropagation();
+  // Checkbox is used store menu state so hide menu via that input
+  document.querySelector('.dd-input').checked = false;
 
   toggleableLayerIds.forEach(function (layer) {
     if (layer == clickedLayer) {
