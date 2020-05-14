@@ -37,6 +37,7 @@ toggleableLayerIds.forEach(function (id) {
 
 map.on('load', function () {
   map.on('click', function (e) {
+    var countryName = document.getElementById('country');
     var percentages = document.getElementById('percentagesList');
     var features = map.queryRenderedFeatures(e.point);
     var total, girl, boy;
@@ -66,16 +67,16 @@ map.on('load', function () {
       }
 
       // fix undefined, could do above but cleaner
-      total = total ? total : 0;
-      boy = boy ? boy : 0;
-      girl = girl ? girl : 0;
+      total = total ? total : 'Data not available';
+      boy = boy ? boy : 'Data not available';
+      girl = girl ? girl : 'Data not available';
     } else {
       // No features found, do nothing (or clear statistics);
       total = girl = boy = 0;
       country = '&nbsp;';
     }
-
-    percentages.innerHTML = `<p><b> ${country} </b></p> <p><b>Total:</b> ${total}% </p> <p><b>Girls:</b> ${girl}%</p> <p><b>Boys:</b> ${boy}%</p>`;
+    countryName.innerHTML = country;
+    percentages.innerHTML = `<p><b>Total:</b> ${total} </p> <p><b>Girls:</b> ${girl}</p> <p><b>Boys:</b> ${boy}</p>`;
   });
 });
 
@@ -181,16 +182,4 @@ function toggleLayers(e) {
     }
     legend.innerHTML = items;
   });
-
-  ///need help simplifying and cleaning up - should erase when selecting a new variable - should say 'no data' if no data exists for this field.
-
-  // for (i = 0; i < toggleableLayerIds.length; i++){
-  //   var visibility = map.getLayoutProperty(toggleableLayerIds[i], 'visibility');
-  //   if (visibility === 'visible'){
-  //     map.on('click', function(e){
-  //       console.log(map.queryRenderedFeatures(e.point))
-  //     })
-  //   }
-
-  // }
 }
