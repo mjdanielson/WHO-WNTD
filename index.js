@@ -7,6 +7,9 @@ var map = new mapboxgl.Map({
   zoom: 1, // starting zoom
 });
 
+var countryName = document.getElementById('country');
+var percentages = document.getElementById('percentagesList');
+
 var toggleableLayerIds = [
   'Offered free tobacco',
   'Favored smoke-free places',
@@ -26,19 +29,22 @@ toggleableLayerIds.forEach(function (id) {
 
   link.onclick = toggleLayers;
 
+  // var percentagesResults = document.getElementById('percentagesList');
+  // var countryTitle = document.getElementById('country');
   var menu = document.querySelector('.dd-menu');
   menu.appendChild(link);
 
   link.addEventListener('click', function () {
     var dropDown = document.querySelector('.dd-button');
     dropDown.innerHTML = link.textContent;
+    percentages.innerHTML = ''
+    countryName.innerHTML = ''
   });
 });
 
 map.on('load', function () {
   map.on('click', function (e) {
-    var countryName = document.getElementById('country');
-    var percentages = document.getElementById('percentagesList');
+
     var features = map.queryRenderedFeatures(e.point);
     var total, girl, boy;
 
@@ -64,19 +70,21 @@ map.on('load', function () {
         total = statsLayer.properties[twoFields[0]];
         girl = statsLayer.properties[twoFields[1]];
         boy = statsLayer.properties[twoFields[2]];
+
       }
 
       // fix undefined, could do above but cleaner
       total = total ? total : 'Data not available';
       boy = boy ? boy : 'Data not available';
       girl = girl ? girl : 'Data not available';
+      percentages.innerHTML = `<p><b> Percent Total:</b> ${total} </p> <p><b>Percent Girls:</b> ${girl}</p> <p><b>Percent Boys:</b> ${boy}</p>`;
     } else {
       // No features found, do nothing (or clear statistics);
-      total = girl = boy = 0;
+      percentages.innerHTML = ''
       country = '&nbsp;';
     }
     countryName.innerHTML = country;
-    percentages.innerHTML = `<p><b>Total:</b> ${total} </p> <p><b>Girls:</b> ${girl}</p> <p><b>Boys:</b> ${boy}</p>`;
+
   });
 });
 
@@ -103,7 +111,7 @@ function toggleLayers(e) {
         '3.1 - 6.0%',
         '6.1 - 9.0%',
         '9.1 - 13.0%',
-        'Greater than 13.0%',
+        'More than 13.0%',
         'Data not available',
       ],
       colors: [
@@ -125,7 +133,7 @@ function toggleLayers(e) {
         '45.1 - 63.0%',
         '63.1 - 76.0%',
         '76.1 - 86.0%',
-        'Greater than 86.0%',
+        'More than 86.0%',
         'Data not available',
       ],
       colors: [
@@ -145,7 +153,7 @@ function toggleLayers(e) {
         '8.1 - 12.0%',
         '12.1 - 15.0%',
         '15.1 - 20.0%',
-        'Greater than 20.0%',
+        'More than 20.0%',
         'Data not available',
       ],
       colors: [
