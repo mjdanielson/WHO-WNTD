@@ -10,41 +10,59 @@ var map = new mapboxgl.Map({
 var countryName = document.getElementById('country');
 var percentages = document.getElementById('percentagesList');
 
-var toggleableLayerIds = [
-  'Offered free tobacco',
-  'Favored smoke-free places',
-  'Object with tobacco logo',
-];
+var select = document.querySelector('#layer-select');
+select.onchange = toggleLayers;
+var activeLayer = select.value;
 
-var activeLayer = toggleableLayerIds[0];
 var fourFields = ['4b-total-per', '4b-boy-per', '4b-girl-per'];
 var threeFields = ['3b-total-per', '3b-boy-per', '3b-girl-per'];
 var twoFields = ['2b-total-per', '2b-boy-per', '2b-girl-per'];
+var layerKey = {
+  'Offered free tobacco': {
+    values: [
+      'Less than 3.0%',
+      '3.1 - 6.0%',
+      '6.1 - 9.0%',
+      '9.1 - 13.0%',
+      'More than 13.0%',
+      'Data not available',
+    ],
+    colors: ['#FFF28B', '#DAA613', '#D45313', '#9D1319', '#780C22', '#ffffff'],
+    title: [
+      'Youths 13-15 ever offered a free cigarette by a tobacco company representative',
+    ],
+  },
 
-toggleableLayerIds.forEach(function (id) {
-  var link = document.createElement('a');
-  link.href = '#';
-  link.className = 'active';
-  link.textContent = id;
+  'Favored smoke-free places': {
+    values: [
+      'Less than 45.0%',
+      '45.1 - 63.0%',
+      '63.1 - 76.0%',
+      '76.1 - 86.0%',
+      'More than 86.0%',
+      'Data not available',
+    ],
+    colors: ['#72E6E2', '#38C5D1', '#09A7C3', '#1B88A9', '#30678D', '#ffffff'],
+    title: ['Youths 13-15 favored banning smoking in enclosed public places'],
+  },
 
-  link.onclick = toggleLayers;
-
-  // var percentagesResults = document.getElementById('percentagesList');
-  // var countryTitle = document.getElementById('country');
-  var menu = document.querySelector('.dd-menu');
-  menu.appendChild(link);
-
-  link.addEventListener('click', function () {
-    var dropDown = document.querySelector('.dd-button');
-    dropDown.innerHTML = link.textContent;
-    percentages.innerHTML = ''
-    countryName.innerHTML = ''
-  });
-});
+  'Object with tobacco logo': {
+    values: [
+      'Less than 8.0%',
+      '8.1 - 12.0%',
+      '12.1 - 15.0%',
+      '15.1 - 20.0%',
+      'More than 20.0%',
+      'Data not available',
+    ],
+    colors: ['#FFF28B', '#DAA613', '#D45313', '#9D1319', '#780C22', '#ffffff'],
+    title: ['Youths 13-15 had object with a cigarette or tobacco logo on it'],
+  },
+};
 
 map.on('load', function () {
+  buildLegend(activeLayer);
   map.on('click', function (e) {
-
     var features = map.queryRenderedFeatures(e.point);
     var total, girl, boy;
 
@@ -70,7 +88,6 @@ map.on('load', function () {
         total = statsLayer.properties[twoFields[0]];
         girl = statsLayer.properties[twoFields[1]];
         boy = statsLayer.properties[twoFields[2]];
-
       }
 
       // fix undefined, could do above but cleaner
@@ -80,114 +97,40 @@ map.on('load', function () {
       percentages.innerHTML = `<p><b> Percent Total:</b> ${total} </p> <p><b>Percent Girls:</b> ${girl}</p> <p><b>Percent Boys:</b> ${boy}</p>`;
     } else {
       // No features found, do nothing (or clear statistics);
-      percentages.innerHTML = ''
+      percentages.innerHTML = '';
       country = '&nbsp;';
     }
     countryName.innerHTML = country;
-
   });
 });
 
 function toggleLayers(e) {
-  var clickedLayer = this.textContent;
+  // console.log(e.target.value);
+  var clickedLayer = e.target.value;
+  map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+  buildLegend(clickedLayer);
+  map.setLayoutProperty(activeLayer, 'visibility', 'none');
   activeLayer = clickedLayer;
-  e.preventDefault();
-  e.stopPropagation();
-  // Checkbox is used store menu state so hide menu via that input
-  document.querySelector('.dd-input').checked = false;
+}
 
-  toggleableLayerIds.forEach(function (layer) {
-    if (layer == clickedLayer) {
-      map.setLayoutProperty(layer, 'visibility', 'visible');
-    } else {
-      map.setLayoutProperty(layer, 'visibility', 'none');
-    }
-  });
+function buildLegend(clickedLayer) {
+  var values = layerKey[clickedLayer].values;
+  var colors = layerKey[clickedLayer].colors;
+  var title = layerKey[clickedLayer].title;
 
-  var layerKey = {
-    'Offered free tobacco': {
-      values: [
-        'Less than 3.0%',
-        '3.1 - 6.0%',
-        '6.1 - 9.0%',
-        '9.1 - 13.0%',
-        'More than 13.0%',
-        'Data not available',
-      ],
-      colors: [
-        '#FFF28B',
-        '#DAA613',
-        '#D45313',
-        '#9D1319',
-        '#780C22',
-        '#ffffff',
-      ],
-      title: [
-        'Youths 13-15 ever offered a free cigarette by a tobacco company representative',
-      ],
-    },
+  var items = '';
+  var legend = document.getElementById('legend');
+  var variableTitle = document.getElementById('indicator');
+  variableTitle.innerHTML = title;
 
-    'Favored smoke-free places': {
-      values: [
-        'Less than 45.0%',
-        '45.1 - 63.0%',
-        '63.1 - 76.0%',
-        '76.1 - 86.0%',
-        'More than 86.0%',
-        'Data not available',
-      ],
-      colors: [
-        '#72E6E2',
-        '#38C5D1',
-        '#09A7C3',
-        '#1B88A9',
-        '#30678D',
-        '#ffffff',
-      ],
-      title: ['Youths 13-15 favored banning smoking in enclosed public places'],
-    },
+  for (i = 0; i < values.length; i++) {
+    var indicator = values[i];
+    var color = colors[i];
 
-    'Object with tobacco logo': {
-      values: [
-        'Less than 8.0%',
-        '8.1 - 12.0%',
-        '12.1 - 15.0%',
-        '15.1 - 20.0%',
-        'More than 20.0%',
-        'Data not available',
-      ],
-      colors: [
-        '#FFF28B',
-        '#DAA613',
-        '#D45313',
-        '#9D1319',
-        '#780C22',
-        '#ffffff',
-      ],
-      title: ['Youths 13-15 had object with a cigarette or tobacco logo on it'],
-    },
-  };
-
-  toggleableLayerIds.forEach(function () {
-    var values = layerKey[clickedLayer].values;
-    var colors = layerKey[clickedLayer].colors;
-    var title = layerKey[clickedLayer].title;
-
-    var items = '';
-    var legend = document.getElementById('legend');
-    var variableTitle = document.getElementById('indicator');
-
-    variableTitle.innerHTML = title;
-
-    for (i = 0; i < values.length; i++) {
-      var indicator = values[i];
-      var color = colors[i];
-
-      var key = `<span class='legend-key' style='background-color:${color}'></span>`;
-      var value = `<span class='legend-value'>${indicator}</span>`;
-      var item = `<div>${key}${value}</div>`;
-      items += item;
-    }
-    legend.innerHTML = items;
-  });
+    var key = `<span class='legend-key' style='background-color:${color}'></span>`;
+    var value = `<span class='legend-value'>${indicator}</span>`;
+    var item = `<div>${key}${value}</div>`;
+    items += item;
+  }
+  legend.innerHTML = items;
 }

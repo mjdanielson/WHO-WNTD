@@ -77,11 +77,21 @@ p {
   margin: 10px;
 }
 
+.countryBox {
+  display: flex;
+  flex-direction: column;
+  height: 120px;
+}
+
+.countryBox h3 {
+  height: 18px;
+}
 /* Percentages List */
 
 .percentagesBox {
   margin-bottom: 20px;
   align-self: center;
+  height: 72px;
 }
 
 #percentagesList {
