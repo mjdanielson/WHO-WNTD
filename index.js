@@ -61,6 +61,7 @@ var layerKey = {
 };
 
 map.on('load', function () {
+  buildLegend(activeLayer);
   map.on('click', function (e) {
     var features = map.queryRenderedFeatures(e.point);
     var total, girl, boy;
@@ -104,7 +105,7 @@ map.on('load', function () {
 });
 
 function toggleLayers(e) {
-  console.log(e.target.value);
+  // console.log(e.target.value);
   var clickedLayer = e.target.value;
   map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
   buildLegend(clickedLayer);
