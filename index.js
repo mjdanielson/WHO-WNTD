@@ -60,27 +60,6 @@ var layerKey = {
   },
 };
 
-// toggleableLayerIds.forEach(function (id) {
-//   var link = document.createElement('a');
-//   link.href = '#';
-//   link.className = 'active';
-//   link.textContent = id;
-
-//   link.onclick = toggleLayers;
-
-//   // var percentagesResults = document.getElementById('percentagesList');
-//   // var countryTitle = document.getElementById('country');
-//   var menu = document.querySelector('.dd-menu');
-//   menu.appendChild(link);
-
-//   link.addEventListener('click', function () {
-//     var dropDown = document.querySelector('.dd-button');
-//     dropDown.innerHTML = link.textContent;
-//     percentages.innerHTML = ''
-//     countryName.innerHTML = ''
-//   });
-// });
-
 map.on('load', function () {
   map.on('click', function (e) {
     var features = map.queryRenderedFeatures(e.point);
@@ -127,9 +106,9 @@ map.on('load', function () {
 function toggleLayers(e) {
   console.log(e.target.value);
   var clickedLayer = e.target.value;
-  map.setLayoutProperty(activeLayer, 'visibility', 'none');
   map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
   buildLegend(clickedLayer);
+  map.setLayoutProperty(activeLayer, 'visibility', 'none');
   activeLayer = clickedLayer;
 }
 
