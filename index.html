@@ -1,100 +1,80 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
 
-  <body>
-    <div id="map"></div>
-    <div class="map-overlay">
-      <div id="title">
-        <h4>World No Tobacco Day</h4>
-      </div>
-      <div id="instructions">
-        Select the indicator from the dropdown menu. Click on the map to get
-        country-specific information
-      </div>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+  <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-      <div class="select-menu">
-        <label for="layer-select">Pick a layer:</label>
-        <select id="layer-select">
-          <option>Offered free tobacco</option>
-          <option>Favored smoke-free places</option>
-          <option>Object with tobacco logo</option>
-        </select>
-        <!-- <label class="dropdown">
-          <div class="dd-button">Offered free tobacco</div>
-          <input type="checkbox" class="dd-input" id="test" />
-          <div class="dd-menu"></div>
-        </label> -->
-      </div>
+<body>
 
-      <div id="indicator">
-        Percentage of youths 13-15 ever offered a free cigarette by a tobacco
-        company representative
-      </div>
+  <div class='flex-parent viewport-full relative scroll-hidden'>
+    <div class='flex-child w-full w240-ml absolute wmin300 static-ml left bottom'>
+      <div class='flex-parent flex-parent--column viewport-third h-full hmax-full bg-white'>
+        <div class='flex-child flex-child--grow py12 scroll-auto'>
+          <div id="instructions" class="txt-s py12">
+            Select the indicator from the dropdown menu. Click on the map to get
+            country-specific information
+          </div>
+          <div class="select-menu txt-s py12">
+            <label for="layer-select">Pick a layer:</label>
+            <select id="layer-select">
+              <option>Offered free tobacco</option>
+              <option>Favored smoke-free places</option>
+              <option>Object with tobacco logo</option>
+            </select>
+          </div>
+          <div id="indicator" class="txt-s">
+            Percentage of youths 13-15 ever offered a free cigarette by a tobacco
+            company representative
+          </div>
+          <div class="countryBox">
+            <h3 id="country"></h3>
+            <div class="percentagesBox">
+              <div id="percentagesList"></div>
+            </div>
+          </div>
 
-      <div class="countryBox">
-        <h3 id="country"></h3>
-        <div class="percentagesBox">
-          <div id="percentagesList"></div>
+          <footer class='px12 py12 hmax-full bg-gray-faint txt-s'>
+            <p id="legend-title">Data from the Global Youth Tobacco Survey</p>
+            <div id="legend"></div>
+            <div id="data-information">
+              Note: The ranges of survey years (data year) used for producing these
+              maps is 2012-2019. <br /><br />
+              The following countries and territories have conducted subnational or
+              regional level GYTS: Afghanistan, Brazil, Chile, Russian Federation.
+              <br /><br />
+              The boundaries and names shown and the designations used on this map
+              do not imply the expression of any opinion whatsoever on the part of
+              the World Health Organization concerning the legal status of any
+              country, territory, city or area or of its authorities, or concerning
+              the delimitation of its frontiers or boundaries. Dotted and dashed
+              lines on maps represent approximate border lines for which there may
+              not yet be full agreement.
+            </div>
+          </footer>
+
+
         </div>
-      </div>
-      <div id="legend-block">
-        <p>Data from the Global Youth Tobacco Survey (GYTS)</p>
-        <div id="legend">
-          <div>
-            <span class="legend-key" style="background-color: #fff28b;"></span
-            ><span class="legend-value">Less than 3.0%</span>
-          </div>
-          <div>
-            <span class="legend-key" style="background-color: #daa613;"></span
-            ><span class="legend-value">3.1 - 6.0%</span>
-          </div>
-          <div>
-            <span class="legend-key" style="background-color: #d45313;"></span
-            ><span class="legend-value">6.1 - 9.0%</span>
-          </div>
-          <div>
-            <span class="legend-key" style="background-color: #9d1319;"></span
-            ><span class="legend-value">9.1 - 13.0%</span>
-          </div>
-          <div>
-            <span class="legend-key" style="background-color: #780c22;"></span
-            ><span class="legend-value">More than 13.0%</span>
-          </div>
-          <div>
-            <span class="legend-key" style="background-color: #ffffff;"></span
-            ><span class="legend-value">Data not available</span>
-          </div>
-        </div>
-        <div id="data-information">
-          Note: The ranges of survey years (data year) used for producing these
-          maps is 2012-2019. <br /><br />
-          The following countries and territories have conducted subnational or
-          regional level GYTS: Afghanistan, Brazil, Chile, Russian Federation.
-          <br /><br />
-          The boundaries and names shown and the designations used on this map
-          do not imply the expression of any opinion whatsoever on the part of
-          the World Health Organization concerning the legal status of any
-          country, territory, city or area or of its authorities, or concerning
-          the delimitation of its frontiers or boundaries. Dotted and dashed
-          lines on maps represent approximate border lines for which there may
-          not yet be full agreement.
-        </div>
+
       </div>
     </div>
-    <script src="index.js"></script>
-  </body>
+
+    <div class='flex-child flex-child--grow bg-darken10 viewport-twothirds viewport-full-ml' id="map">
+    </div>
+  </div>
+
+
+  <script src="index.js"></script>
+</body>
+
 </html>
