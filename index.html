@@ -26,11 +26,9 @@
 
   <body>
     <div class="flex-parent viewport-full relative scroll-hidden">
-      <div
-        class="flex-child w-full w240-ml absolute wmin300 static-ml left bottom"
-      >
+      <div class="flex-child w240-ml absolute wmin300-ml static-ml left bottom">
         <div
-          class="flex-parent flex-parent--column viewport-third h-full-ml hmax-full bg-white"
+          class="flex-parent flex-parent--column viewport-third h-full-ml bg-white"
         >
           <div class="flex-child flex-child--grow py12 scroll-auto">
             <div id="instructions" class="txt-s py12">
@@ -39,11 +37,14 @@
             </div>
             <div class="select-menu txt-s py12">
               <label for="layer-select">Pick a layer:</label>
-              <select id="layer-select">
-                <option>Offered free tobacco</option>
-                <option>Favored smoke-free places</option>
-                <option>Object with tobacco logo</option>
-              </select>
+              <div class="select-container">
+                <select id="layer-select" class="select">
+                  <option>Offered free tobacco</option>
+                  <option>Favored smoke-free places</option>
+                  <option>Object with tobacco logo</option>
+                </select>
+                <div class="select-arrow"></div>
+              </div>
             </div>
             <div id="indicator" class="txt-s">
               Percentage of youths 13-15 ever offered a free cigarette by a
