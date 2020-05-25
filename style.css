@@ -52,6 +52,7 @@ h3 {
 
 #legend {
   align-self: center;
+  width: fit-content;
   color: rgb(114, 109, 109);
 }
 
