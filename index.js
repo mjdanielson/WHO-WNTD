@@ -2,7 +2,7 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoibWFwYm94LWNvbW11bml0eSIsImEiOiJjazhrbnF1NWIwMHVjM2Zwbmh2OWs2dTI1In0.O8lasZoOGKUihm-HVEZxaQ';
 var map = new mapboxgl.Map({
   container: 'map', //map container
-  style: 'mapbox://styles/mapbox-community/cka372tus04oq1imm2rgd636k', // Mapbox style
+  style: 'mapbox://styles/mapbox-community/ckao6km8r6h3m1ip18tkrq4kg', // Mapbox style
   center: [34.7, 15.5], // starting position [lng, lat]
   zoom: 1, // starting zoom
 });
@@ -68,10 +68,10 @@ map.on('load', function () {
 
     // grab the first available layer built on the stats layer
     var statsLayer = features.filter(
-      (item) => item.sourceLayer === 'WHO-WNTD-indicators-47er43'
+      (item) => item.sourceLayer === 'WHO_WNTD_Indicator-cgchi0'
     )[0];
     if (statsLayer) {
-      var country = statsLayer.properties['GEOUNIT'];
+      var country = statsLayer.properties['ADM0_NAME'];
       if (activeLayer === 'Object with tobacco logo') {
         total = statsLayer.properties[fourFields[0]];
         girl = statsLayer.properties[fourFields[1]];
