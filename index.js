@@ -2,7 +2,7 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoibWFwYm94LWNvbW11bml0eSIsImEiOiJjazhrbnF1NWIwMHVjM2Zwbmh2OWs2dTI1In0.O8lasZoOGKUihm-HVEZxaQ';
 var map = new mapboxgl.Map({
   container: 'map', //map container
-  style: 'mapbox://styles/mapbox-community/ckao6km8r6h3m1ip18tkrq4kg', // Mapbox style
+  style: 'mapbox://styles/mapbox-community/ckaojte1y0skf1invdpf2jvga', // Mapbox style
   center: [34.7, 15.5], // starting position [lng, lat]
   zoom: 1, // starting zoom
 });
@@ -14,9 +14,9 @@ var select = document.querySelector('#layer-select');
 select.onchange = toggleLayers;
 var activeLayer = select.value;
 
-var fourFields = ['4b-total-per', '4b-boy-per', '4b-girl-per'];
-var threeFields = ['3b-total-per', '3b-boy-per', '3b-girl-per'];
-var twoFields = ['2b-total-per', '2b-boy-per', '2b-girl-per'];
+var fourFields = ['4b-total-p', '4b-boy-per', '4b-girl-pe'];
+var threeFields = ['3b-total-p', '3b-boy-per', '3b-girl-pe'];
+var twoFields = ['2b-total-p', '2b-boy-per', '2b-girl-pe'];
 var layerKey = {
   'Offered free tobacco': {
     values: [
@@ -68,33 +68,34 @@ map.on('load', function () {
 
     // grab the first available layer built on the stats layer
     var statsLayer = features.filter(
-      (item) => item.sourceLayer === 'WHO_WNTD_Indicator-cgchi0'
+      (item) => item.sourceLayer === 'WHO_WNTD_Indicators-5bz0oj'
     )[0];
+
     if (statsLayer) {
-      var country = statsLayer.properties['ADM0_NAME'];
+      var country = statsLayer.properties['ADM0_SOVRN'];
       if (activeLayer === 'Object with tobacco logo') {
         total = statsLayer.properties[fourFields[0]];
-        girl = statsLayer.properties[fourFields[1]];
-        boy = statsLayer.properties[fourFields[2]];
+        boy = statsLayer.properties[fourFields[1]];
+        girl = statsLayer.properties[fourFields[2]];
       }
 
       if (activeLayer === 'Favored smoke-free places') {
         total = statsLayer.properties[threeFields[0]];
-        girl = statsLayer.properties[threeFields[1]];
-        boy = statsLayer.properties[threeFields[2]];
+        boy = statsLayer.properties[threeFields[1]];
+        girl = statsLayer.properties[threeFields[2]];
       }
 
       if (activeLayer === 'Offered free tobacco') {
         total = statsLayer.properties[twoFields[0]];
-        girl = statsLayer.properties[twoFields[1]];
-        boy = statsLayer.properties[twoFields[2]];
+        boy = statsLayer.properties[twoFields[1]];
+        girl = statsLayer.properties[twoFields[2]];
       }
 
       // fix undefined, could do above but cleaner
       total = total ? total : 'Data not available';
       boy = boy ? boy : 'Data not available';
       girl = girl ? girl : 'Data not available';
-      percentages.innerHTML = `<p><b> Percent Total:</b> ${total} </p> <p><b>Percent Girls:</b> ${girl}</p> <p><b>Percent Boys:</b> ${boy}</p>`;
+      percentages.innerHTML = `<p><b> Percent Total:</b> ${total} </p> <p><b>Percent Boys:</b> ${boy}</p> <p><b>Percent Girls:</b> ${girl}</p>`;
     } else {
       // No features found, do nothing (or clear statistics);
       percentages.innerHTML = '';
