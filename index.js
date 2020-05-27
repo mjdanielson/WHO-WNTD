@@ -1,8 +1,8 @@
 mapboxgl.accessToken =
-  'pk.eyJ1IjoibWFwYm94LWNvbW11bml0eSIsImEiOiJjazhrbnF1NWIwMHVjM2Zwbmh2OWs2dTI1In0.O8lasZoOGKUihm-HVEZxaQ';
+  'pk.eyJ1IjoiZ3VlcnJhamEiLCJhIjoiY2thb3lycnl2MDR2MDJxbXNycDBxcTN0YyJ9.EJTNb6w2Q3_7VmdUEIbRXA';
 var map = new mapboxgl.Map({
   container: 'map', //map container
-  style: 'mapbox://styles/mapbox-community/ckaojte1y0skf1invdpf2jvga', // Mapbox style
+  style: 'mapbox://styles/guerraja/ckaplkkug0n4r1imsv93k559z', // Mapbox style
   center: [34.7, 15.5], // starting position [lng, lat]
   zoom: 1, // starting zoom
 });
@@ -68,11 +68,11 @@ map.on('load', function () {
 
     // grab the first available layer built on the stats layer
     var statsLayer = features.filter(
-      (item) => item.sourceLayer === 'WHO_WNTD_Indicators-5bz0oj'
+      (item) => item.sourceLayer === 'WHO_WNTD_Indicators-9tb9u9'
     )[0];
 
     if (statsLayer) {
-      var country = statsLayer.properties['ADM0_SOVRN'];
+      var country = statsLayer.properties['GEOUNIT'];
       if (activeLayer === 'Object with tobacco logo') {
         total = statsLayer.properties[fourFields[0]];
         boy = statsLayer.properties[fourFields[1]];
